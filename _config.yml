@@ -23,7 +23,7 @@ repository               : "griffin-has-questions.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "old_profile.png"
+  avatar           : "profile.png"
   name             : "Griffin Edwards"
   pronouns         : "he/him"  
   bio              : "Bios are harder than math"
