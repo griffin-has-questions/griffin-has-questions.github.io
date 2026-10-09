@@ -13,11 +13,11 @@ minimal_mistakes_skin    : "dirt"
 title                    : "Griffin Edwards"
 title_separator          : "-"
 name                     : &name "Griffin Edwards"
-description              : &description "Griffin Edwards' Personal and Professional Math Website"   # Update this with a general description of your site, this is the default if not overridden by a page
+description              : &description "Griffin Edwards is a mathematics Ph.D. candidate at Georgia Tech working in algebraic combinatorics and committed to teaching, mentoring, and mathematical community building."
 url                      : https://griffin-has-questions.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "griffin-has-questions.github.io"
+repository               : "griffin-has-questions/griffin-has-questions.github.io"
 
 # Site Author - The following control what appear as part of the author content on the side bar.
 #               If a field is blank the icon and link will not appear, otherwise it will be shown.
@@ -27,7 +27,7 @@ author:
   avatar           : "profile.png"
   name             : "Griffin Edwards"
   pronouns         : "he/him"  
-  bio              : "Bios are harder than math"
+  bio              : "Mathematics Ph.D. candidate focused on teaching, mentoring, and algebraic combinatorics."
   location         : "Atlanta, GA"
   employer         : "Georgia Institute of Technology"
   uri              : # URL
@@ -126,7 +126,7 @@ staticman:
       options:
         format           : "iso8601" # "iso8601" (default), "timestamp-seconds", "timestamp-milliseconds"
 atom_feed:
-  hide                   : false     # change to true to hide the RSS feed in the footer
+  hide                   : true
   path                   : # blank (default) uses feed.xml
 
 
