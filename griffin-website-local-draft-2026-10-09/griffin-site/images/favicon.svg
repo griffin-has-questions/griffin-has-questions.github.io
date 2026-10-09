@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Griffin Edwards mathematical graph</title>
+  <rect width="64" height="64" rx="14" fill="#12324a"/>
+  <path d="M10 32h44M32 10v44" stroke="#d8e7ee" stroke-width="2" opacity=".55"/>
+  <path d="M9 45c9-1 13-7 18-17 5-10 10-14 17-7 4 4 7 9 11 10" fill="none" stroke="#49c5b6" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="32" cy="25" r="4" fill="#f2b84b"/>
+</svg>
