@@ -16,7 +16,7 @@ I care about building mathematical communities in which students can find suppor
 
 ## Outreach
 
-- **High School Math Day, Georgia Tech, 2025–2027:** Volunteer and problem writer.
+- **High School Math Day, Georgia Tech, 2025–2027:** Volunteer and problem writer. 
 - **Emory Math Circle, 2022–2026:** Teacher.
 - **Brown Math Circle, 2021–2022:** Volunteer.
 
