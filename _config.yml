@@ -360,3 +360,5 @@ compress_html:
   clippings: all
   ignore:
     envs: development
+
+timezone: America/New_York
