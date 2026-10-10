@@ -24,7 +24,7 @@ repository               : "griffin-has-questions/griffin-has-questions.github.i
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profile.jpg"
   name             : "Griffin Edwards"
   pronouns         : "he/him"  
   bio              : "Mathematics Ph.D. candidate studying algebraic combinatorics with a minor in the Center for Teaching and Learning."
