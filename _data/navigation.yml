@@ -20,8 +20,8 @@ main:
   # - title: "Visualizations"
   #   url: /visualizations/
 
-  # - title: "Puzzles"
-  #   url: /puzzles/
+  - title: "Puzzles"
+    url: /puzzles/
   
   - title: "^•ﻌ•^"
     url: /cat/
