@@ -4,7 +4,9 @@ title: "Puzzles"
 permalink: /puzzles/
 author_profile: true
 ---
+Other puzzles coming soon!
 
+## Ricochet Puzzle. 
 Find the fewest moves. Choose a previous puzzle from the archive, or try the newest board below.
 
 Click inside the game to use number and arrow keys.
