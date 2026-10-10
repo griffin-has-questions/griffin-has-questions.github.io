@@ -7,9 +7,9 @@ author_profile: true
 gallery_folder: /images/cat/
 ---
 
-## Meet my cat!
+## Meet my cat, Piper!
 
-Her name is Piper and she put all her skill points in charisma. Here are some of my favorite pictures.
+Piper put all her skill points in charisma. Here are some of my favorite pictures of her.
 
 <style>
   .cat-gallery {
