@@ -20,7 +20,7 @@ I am currently working as a student under [Matt Baker](https://sites.google.com/
 
 ## Selected contribution
 
-I computationally verified the conjectured reduced-Dressian behavior of the elliptic matroids \(T_n\) for \(7 \leq n \leq 26\). This computation is acknowledged in Baker–Huh–Kummer–Lorscheid, *Lorentzian Polynomials and Matroids over Triangular Hyperfields* (2025).
+I computationally verified the conjectured reduced-Dressian behavior of the elliptic matroids $T_n$ for $7 \leq n \leq 26$. This computation is acknowledged in Baker–Huh–Kummer–Lorscheid, *Lorentzian Polynomials and Matroids over Triangular Hyperfields* (2025).
 
 ## Presentations
 
