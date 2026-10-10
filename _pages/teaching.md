@@ -25,9 +25,9 @@ I graded exams and homework, held office hours, and gave detailed feedback on ev
 
 ### Other courses
 
-- **MATH 2603: Introduction to Discrete Mathematics** — Teaching Assistant, Fall 2025 and Spring 2026. I wrote my own worksheets for recitation.
-- **MATH 1552: Integral Calculus** — Teaching Assistant, Spring 2025, in a large coordinated course.
-- **MATH 1553: Introduction to Linear Algebra** — Teaching Assistant, Fall 2024, in a large coordinated course.
+- **MATH 2603: Introduction to Discrete Mathematics** - Teaching Assistant, Fall 2025 and Spring 2026. I wrote my own worksheets for recitation.
+- **MATH 1552: Integral Calculus** - Teaching Assistant, Spring 2025, in a large coordinated course.
+- **MATH 1553: Introduction to Linear Algebra** - Teaching Assistant, Fall 2024, in a large coordinated course.
 
 ## Brown University
 
@@ -36,10 +36,10 @@ From 2020 to 2021, I supported Honors Linear Algebra, Real Analysis, Differentia
 ## Mentoring
 
 - **Georgia Tech Mathematics REU, Summer 2025:** Co-mentored Catie Lillja and Bora Olmez with Matthew Baker and Noah Solomon on an algorithm for the group law on a tropical elliptic curve.
-- **Georgia Tech Directed Reading Program, Spring 2026:** Mentored a project on the Tutte polynomial and the Heawood conjecture.
+- **Georgia Tech Directed Reading Program 2022-2026.** 
 
 ## Teaching development and recognition
 
 - MathLab Award for Top TA Helper, Georgia Tech School of Mathematics, 2026.
-- Doctoral Minor in Higher Education, in progress.
+- Doctoral Minor through the Center for Teaching and Learning at the Georgia Insitute of Technology, in progress.
 - Tech to Teaching Certificate, in progress.
