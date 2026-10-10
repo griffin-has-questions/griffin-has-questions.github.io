@@ -17,11 +17,11 @@ main:
   - title: "Service"
     url: /service/
 
-  - title: "Visualizations"
-    url: /visualizations/
+  # - title: "Visualizations"
+  #   url: /visualizations/
 
-  - title: "Puzzles"
-    url: /puzzles/
+  # - title: "Puzzles"
+  #   url: /puzzles/
   
   - title: "^•ﻌ•^"
     url: /cat/
