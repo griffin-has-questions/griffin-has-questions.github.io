@@ -22,6 +22,9 @@ main:
 
   - title: "Puzzles"
     url: /puzzles/
+  
+  - title: "^•ﻌ•^"
+    url: /cat/
 
   - title: "CV"
     url: /cv/
