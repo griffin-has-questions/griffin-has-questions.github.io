@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a Ph.D. candidate in mathematics at the Georgia Institute of Technology, advised by Matthew Baker. I expect to graduate in May 2027. Before coming to Georgia Tech, I earned a B.S. in Mathematics with Honors from Brown University in 2022.
+I am a Ph.D. candidate in mathematics at the Georgia Institute of Technology, advised by [Matthew Baker](https://sites.google.com/view/mattbakermath/home/). I expect to graduate in May 2027. Before coming to Georgia Tech, I earned a Bachelor of Science in Mathematics with Honors from Brown University in 2022.
 
 My research is in algebraic combinatorics, especially matroid theory and its connections with tropical geometry, algebraic geometry, and pastures. My dissertation has the working title *Dressians of Matroids through Pastures*.
 
@@ -28,3 +28,7 @@ I believe in [Frederica Ardilla’s four axioms](http://fardila.com/). They guid
 **Axiom 3.** Mathematics is a powerful, malleable tool that can be shaped and used differently by various communities to serve their needs.
 
 **Axiom 4.** Every student deserves to be treated with dignity and respect.
+
+## Mathematical Family
+
+My academic siblings [Ari Pomerantz](https://aripomeranz.github.io/aripomeranz/) and [Noah Solomon](http://solomonnoah.github.io/) also study matroids and are wonderful people.
