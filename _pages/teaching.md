@@ -5,7 +5,7 @@ permalink: /teaching/
 author_profile: true
 ---
 
-I teach mathematics as a collaborative activity: students prepare through short readings, work together on substantive problems, present ideas publicly, and revise their understanding through discussion. I am especially interested in visual explanations, thoughtful assessment, and making mathematical notation accessible to screen readers.
+I teach mathematics as a collaborative activity. I am especially interested in visual explanations, thoughtful assessment, and increasing mathematical accessiblity.
 
 ## Georgia Tech
 
@@ -13,29 +13,29 @@ I teach mathematics as a collaborative activity: students prepare through short 
 
 *Instructor of Record, Fall 2026*
 
-I designed and teach this flipped, discussion-centered course for 15 students who placed beyond precalculus but want additional support with the foundations of calculus. Students complete interactive readings before class, then spend class time on collaborative worksheets, quizzes, group work, board presentations, and instructor synthesis.
-
-An initial diagnostic revealed common gaps in trigonometric identities and logarithmic graphing, so I built targeted review into recurring activities, including unit-circle attendance prompts. I also rewrote the worksheets' mathematical notation to make it readable by screen readers and easier to navigate with assistive technology.
+This flipped course is designed to support with the foundations of calculus. I expect all students to complete interactive readings before class, and come to class prepared to work collaborative with their peers on worksheets and online assignments. All class information may be found at the [Canvas site](https://gatech.instructure.com/courses/547404). Homework will be returned through gradescope, and I encourage students to post all content questions on our [Piazza](https://piazza.com/class/mt1d07b1ten6ki). My office hours are 9:30-10:30 am on Tuesdays and Thursdays in Clough 248 or by appointment. I also encourage use of the free tutoring at the [MathLab](https://math.gatech.edu/undergraduate/tutors-and-labs) which is open Monday through Thursday, 12:30-6pm and Friday, 12:30-3:30pm in Clough 280.
 
 ### MATH 4107: Abstract Algebra I
 
 *Lecturer's Assistant, Summer 2026*
 
-I graded exams and homework, held office hours, and gave detailed feedback on every problem. The course used a holistic Beginner/Proficient/Mastered assessment system that emphasized mathematical growth and revision.
+[Here](https://gatech.instructure.com/courses/557940) is the course Canvas site. Homework will be returned through gradescope. If you have any questions, please reach out to me or come by my office hours 2-3 pm on Wednesdays in the MathLab, Clough 280. I also encourage use of the free tutoring at the [MathLab](https://math.gatech.edu/undergraduate/tutors-and-labs) which is open Monday through Thursday, 12:30-6pm and Friday, 12:30-3:30pm in Clough 280.
 
 ### Other courses
 
 - **MATH 2603: Introduction to Discrete Mathematics** - Teaching Assistant, Fall 2025 and Spring 2026. I wrote my own worksheets for recitation.
-- **MATH 1552: Integral Calculus** - Teaching Assistant, Spring 2025, in a large coordinated course.
-- **MATH 1553: Introduction to Linear Algebra** - Teaching Assistant, Fall 2024, in a large coordinated course.
+- **MATH 1552: Integral Calculus** - Teaching Assistant, Spring 2025.
+- **MATH 1553: Introduction to Linear Algebra** - Teaching Assistant, Fall 2024.
 
 ## Brown University
 
-From 2020 to 2021, I supported Honors Linear Algebra, Real Analysis, Differential Geometry, Linear Algebra, and Advanced Classical Mechanics as an undergraduate teaching assistant. From 2019 to 2021, I also tutored mathematics, physics, and logic through Brown's Sheridan Center for Teaching and Learning.
+From 2020 to 2021, I supported Honors Linear Algebra, Real Analysis, Differential Geometry, Linear Algebra, and Advanced Classical Mechanics (Physics) as an undergraduate teaching assistant. 
+
+From 2019 to 2021, I also tutored mathematics, physics, and logic through Brown's Sheridan Center for Teaching and Learning.
 
 ## Mentoring
 
-- **Georgia Tech Mathematics REU, Summer 2025:** Co-mentored Catie Lillja and Bora Olmez with Matthew Baker and Noah Solomon on an algorithm for the group law on a tropical elliptic curve.
+- **Georgia Tech Mathematics REU, Summer 2025:** mentored Catie Lillja and Bora Olmez with Matthew Baker on an algorithm for the group law on a tropical elliptic curve. A publication is coming soon.
 - **Georgia Tech Directed Reading Program 2022-2026.** 
 
 ## Teaching development and recognition
