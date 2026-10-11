@@ -31,7 +31,7 @@ I computationally verified the conjectured reduced-Dressian behavior of the elli
 
 ## Workshops and conferences attended
 
-- *Future of Macaulay2*, contributor, Georgia Tech, Atlanta, May 2025.
+- *Future of Macaulay2*, contributor, Georgia Tech, Atlanta, May 2026.
 - *Montreal ISM Discovery School: Combinatorics of Moduli of Curves*, LACIM, Montréal, May, 2026.
 - *Macaulay2 Workshop*, contributor, Tulane University, New Orleans, April 2025.
 - *Tropical Geometry: Moduli Spaces and Matroids*, Goethe University, Frankfurt, October 2024.
