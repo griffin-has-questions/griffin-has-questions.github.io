@@ -25,7 +25,15 @@
     #weekly-ricochet-v2 .rp-wall { stroke:var(--rp-wall); stroke-width:5; stroke-linecap:round; }
     #weekly-ricochet-v2 .rp-bumper { stroke:var(--rp-accent); stroke-width:5; stroke-linecap:round; }
     #weekly-ricochet-v2 .rp-grid { stroke:var(--rp-line); stroke-width:.8; }
-    #weekly-ricochet-v2 .rp-seam { stroke:var(--rp-accent); stroke-width:2; stroke-dasharray:6 5; }
+    #weekly-ricochet-v2 .rp-seam { stroke-width:8; stroke-linecap:butt; }
+    #weekly-ricochet-v2 .rp-seam-x-start { stop-color:light-dark(#2875b8,#75b9f0); }
+    #weekly-ricochet-v2 .rp-seam-x-end { stop-color:light-dark(#b74482,#ed91be); }
+    #weekly-ricochet-v2 .rp-seam-y-start { stop-color:light-dark(#237e88,#79d2da); }
+    #weekly-ricochet-v2 .rp-seam-y-end { stop-color:light-dark(#9b700e,#ecc45d); }
+    #weekly-ricochet-v2 .rp-seam-z-start { stop-color:light-dark(#7952aa,#ba96ed); }
+    #weekly-ricochet-v2 .rp-seam-z-end { stop-color:light-dark(#b65a18,#f6a55e); }
+    #weekly-ricochet-v2 .rp-axis.rp-fold-axis { font-size:calc(10px * var(--rp-svg-scale,1)); }
+    #weekly-ricochet-v2 .rp-seam-direction { stroke:var(--rp-piece-text); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
     #weekly-ricochet-v2 .rp-cell { fill:var(--rp-tile); }
     #weekly-ricochet-v2 .rp-cell-alt { fill:var(--rp-alt); }
     #weekly-ricochet-v2 .rp-axis { fill:var(--rp-muted); font-size:calc(11px * var(--rp-svg-scale,1)); }

@@ -4,8 +4,8 @@
   const $=s=>root.querySelector(s),$$=s=>Array.from(root.querySelectorAll(s));
   const DIRS=[[0,-1],[1,0],[0,1],[-1,0]],directionNames=['north','east','south','west'];
   const SPEED=1.2,MAX_COLORS=32;
-  const surfaces={flat:'Flat',cylinder:'Cylinder',torus:'Torus',mobius:'Möbius strip',klein:'Klein bottle'};
-  const surfaceRules={flat:'Flat: all four outer edges are walls.',cylinder:'Cylinder: left and right connect at the same row. Top and bottom are walls.',torus:'Torus: left/right and top/bottom connect without a twist.',mobius:'Möbius strip: left and right connect with reversed row numbers (1 ↔ 8, 2 ↔ 7, …). Top and bottom are walls.',klein:'Klein bottle: left and right connect with reversed row numbers; top and bottom connect without a twist.'};
+  const surfaces={flat:'Flat',cylinder:'Cylinder',torus:'Torus',mobius:'Möbius strip',klein:'Klein bottle',cone:'Cone',top:'Top',pillow:'Pillow'};
+  const surfaceRules={flat:'Flat: all four outer edges are walls.',cylinder:'Cylinder: left and right connect at the same row. Top and bottom are walls.',torus:'Torus: left/right and top/bottom connect without a twist.',mobius:'Möbius strip: left and right connect with reversed row numbers (1 ↔ 8, 2 ↔ 7, …). Top and bottom are walls.',klein:'Klein bottle: left and right connect with reversed row numbers; top and bottom connect without a twist.',cone:'Cone: top column k connects to left row k. Moving up exits from the left moving right; moving left exits from the top moving down. Right and bottom are walls.',top:'Top: top column k connects to left row k, as on Cone. Right row k also connects to bottom column k: moving right exits from the bottom moving up; moving down exits from the right moving left. Each crossing turns the piece by 90°.',pillow:'Pillow: left and right connect at the same row. The top folds onto itself, pairing columns 1 ↔ 8, 2 ↔ 7, 3 ↔ 6 and 4 ↔ 5; moving up returns moving down. The bottom folds separately with the same column pairs; moving down returns moving up. Top and bottom do not connect to each other.'};
   const BASE=Object.values(window.RICOCHET_PUBLISHED_PUZZLES||{});
   if(IS_CREATOR&&!BASE.length)BASE.push({"n": 8, "surface": "flat", "walls": [[36, 44], [45, 53], [36, 37], [53, 54], [48, 49], [49, 57], [37, 38], [8, 9], [51, 52], [32, 33], [54, 62], [44, 52], [21, 29], [34, 35], [42, 50], [18, 26], [54, 55], [27, 35], [9, 17], [48, 56], [38, 46], [35, 36], [10, 11], [42, 43], [44, 45]], "mirrors": [[28, "\\"], [53, "/"], [18, "/"], [9, "\\"], [14, "\\"]], "pieces": [8, 6, 1, 48], "id": "2026-10-05-flat", "date": "2026-10-05", "title": "A turn for the better", "target": 57});
   const PALETTE=[['Red','#bf3d49','#f67582'],['Blue','#2875b8','#75b9f0'],['Green','#277850','#69c798'],['Yellow','#9b700e','#ecc45d'],['Purple','#7952aa','#ba96ed'],['Orange','#b65a18','#f6a55e'],['Pink','#b74482','#ed91be'],['Teal','#237e88','#79d2da'],['Gray','#586779','#b7c3d3'],['Brown','#835b3e','#ccaa84'],['Indigo','#5158b3','#a3a9fa'],['Lime','#627c22','#bdcf78'],['Coral','#b05044','#ebaaa2'],['Cyan','#2479a1','#81c9ed'],['Plum','#854885','#d3a0d5'],['Mint','#367660','#8bceaf']].map(([name,light,dark])=>({name,light,dark}));
@@ -15,14 +15,26 @@
   const edgeKey=(a,b)=>a<b?`${a}:${b}`:`${b}:${a}`;
   const point=cell=>({x:cell%8,y:Math.floor(cell/8)}),center=p=>({x:36+(p.x+.5)*50,y:36+(p.y+.5)*50});
   function step(n,surface,cell,direction){let x=cell%n,y=Math.floor(cell/n),[dx,dy]=DIRS[direction];x+=dx;y+=dy;let seam=false;
+    if(surface==='cone'||surface==='top'){
+      if(y<0)return {cell:x*n,direction:1,seam:true};
+      if(x<0)return {cell:y,direction:2,seam:true};
+      if(x>=n)return surface==='top'?{cell:(n-1)*n+y,direction:0,seam:true}:null;
+      if(y>=n)return surface==='top'?{cell:x*n+n-1,direction:3,seam:true}:null;
+      return {cell:y*n+x,direction,seam:false};
+    }
+    if(surface==='pillow'&&(y<0||y>=n))return {cell:(y<0?0:n-1)*n+(n-1-x),direction:y<0?2:0,seam:true};
     if(x<0||x>=n){if(surface==='flat')return null;x=(x+n)%n;seam=true;if(surface==='mobius'||surface==='klein'){y=n-1-y;dy=-dy;}}
     if(y<0||y>=n){if(surface==='flat'||surface==='cylinder'||surface==='mobius')return null;y=(y+n)%n;seam=true;}
     return {cell:y*n+x,direction:DIRS.findIndex(d=>d[0]===dx&&d[1]===dy),seam};
   }
-  function compile(p){return {...p,wallSet:new Set(p.walls.map(w=>edgeKey(...w))),mirrorMap:new Map(p.mirrors)};}
+  // A direction distinguishes separate seams that happen to join the same cells.
+  // Legacy two-cell walls keep their existing identities and puzzle codes.
+  function portWall(n,surface,cell,dir){const next=step(n,surface,cell,dir);if(!next)return null;const reverse=(next.direction+2)%4;return cell<next.cell?[cell,next.cell,dir]:cell>next.cell?[next.cell,cell,reverse]:[cell,cell,Math.min(dir,reverse)];}
+  const wallKey=w=>w.length===3?w.join(':'):edgeKey(w[0],w[1]);
+  function compile(p){return {...p,wallSet:new Set(p.walls.map(wallKey)),mirrorMap:new Map(p.mirrors)};}
   function slide(board,pieces,robot,direction,trace=false){const start=pieces[robot],occupied=new Set(pieces.filter((_,i)=>i!==robot));let cell=start,dir=direction,states=new Set(),traveled=false,path=trace?[{cell,direction:dir,seam:false}]:null;
     for(;;){const key=cell*4+dir;if(states.has(key))return {ok:false,reason:'loop'};states.add(key);const next=step(board.n,board.surface,cell,dir);
-      if(!next||board.wallSet.has(edgeKey(cell,next.cell))||occupied.has(next.cell)){if(board.mirrorMap.has(cell))return {ok:false,reason:'bumper'};if(!traveled)return {ok:false,reason:'blocked'};return {ok:true,cell,path};}
+      if(!next||board.wallSet.has(edgeKey(cell,next.cell))||board.wallSet.has(wallKey(portWall(board.n,board.surface,cell,dir)))||occupied.has(next.cell)){if(board.mirrorMap.has(cell))return {ok:false,reason:'bumper'};if(!traveled)return {ok:false,reason:'blocked'};return {ok:true,cell,path};}
       cell=next.cell;dir=next.direction;traveled=true;const mirror=board.mirrorMap.get(cell);if(mirror)dir=mirror==='/'?[1,0,3,2][dir]:[3,2,1,0][dir];if(trace)path.push({cell,direction:dir,seam:next.seam,bumper:!!mirror});
     }
   }
@@ -41,11 +53,14 @@
     if(!Number.isInteger(targetIndex)||targetIndex<0||targetIndex>=raw.pieces.length||!isCell(raw.target)||raw.mirrors.some(m=>m[0]===raw.target))throw Error('Choose a target piece and a goal space without a bumper.');
     if(raw.pieces[targetIndex]===raw.target)throw Error('The target piece must start away from its goal.');
     if(!Array.isArray(raw.walls)||raw.walls.length>256)throw Error('Invalid wall list.');
-    const walls=[],seen=new Set();for(const w of raw.walls){if(!Array.isArray(w)||w.length!==2||!w.every(isCell)||!DIRS.some((_,d)=>step(8,raw.surface,w[0],d)?.cell===w[1]))throw Error('Walls must separate adjacent spaces on this surface.');const sorted=w[0]<w[1]?[w[0],w[1]]:[w[1],w[0]],key=edgeKey(...sorted);if(!seen.has(key)){seen.add(key);walls.push(sorted);}}
+    const walls=[],seen=new Set();for(const w of raw.walls){
+      if(!Array.isArray(w)||![2,3].includes(w.length)||!isCell(w[0])||!isCell(w[1])||(w.length===3?(!Number.isInteger(w[2])||w[2]<0||w[2]>3||step(8,raw.surface,w[0],w[2])?.cell!==w[1]):!DIRS.some((_,d)=>step(8,raw.surface,w[0],d)?.cell===w[1])))throw Error('Walls must separate adjacent spaces on this surface.');
+      const sorted=w.length===3?portWall(8,raw.surface,w[0],w[2]):w[0]<w[1]?[w[0],w[1]]:[w[1],w[0]],key=wallKey(sorted);if(!seen.has(key)){seen.add(key);walls.push(sorted);}
+    }
     if(typeof raw.title!=='string'||!raw.title.trim()||raw.title.length>80)throw Error('Give the puzzle a title of 1–80 characters.');
     if(typeof raw.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(raw.date)||!Number.isFinite(Date.parse(raw.date+'T12:00:00Z'))||new Date(raw.date+'T12:00:00Z').toISOString().slice(0,10)!==raw.date)throw Error('Choose a valid puzzle date.');
     if(raw.seed!==undefined&&(typeof raw.seed!=='string'||raw.seed.length>120))throw Error('Seeds can contain up to 120 characters.');
-    const p={n:8,surface:raw.surface,walls:walls.sort((a,b)=>a[0]-b[0]||a[1]-b[1]),mirrors:raw.mirrors.map(m=>m.slice()).sort((a,b)=>a[0]-b[0]),pieces:raw.pieces.slice(),colors:colors.map(c=>({name:c.name.trim(),light:c.light.toLowerCase(),dark:c.dark.toLowerCase()})),targetIndex,target:raw.target,title:raw.title.trim(),date:raw.date,seed:(raw.seed||'').trim()};
+    const p={n:8,surface:raw.surface,walls:walls.sort((a,b)=>a[0]-b[0]||a[1]-b[1]||(a[2]??-1)-(b[2]??-1)),mirrors:raw.mirrors.map(m=>m.slice()).sort((a,b)=>a[0]-b[0]),pieces:raw.pieces.slice(),colors:colors.map(c=>({name:c.name.trim(),light:c.light.toLowerCase(),dark:c.dark.toLowerCase()})),targetIndex,target:raw.target,title:raw.title.trim(),date:raw.date,seed:(raw.seed||'').trim()};
     const sig=signature(p);p.id=keepId?raw.id:'custom-'+hash(sig)+'-'+hash(sig,3339675911);return p;
   }
   function encodePuzzle(raw){const p=normalize(raw),json=signature(p),bytes=new TextEncoder().encode(json);let binary='';for(const b of bytes)binary+=String.fromCharCode(b);return 'RP1.'+btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')+'.'+hash(json);}
@@ -60,7 +75,7 @@
     if(!Object.hasOwn(surfaces,surface)||!Number.isInteger(count)||count<1||count>MAX_COLORS||!Number.isInteger(targetIndex)||targetIndex<0||targetIndex>=count)throw Error('Choose a supported surface, 1–32 colors and a target piece.');
     seed=seed.trim().normalize('NFC');const rnd=random(JSON.stringify(['generator-1',seed,surface,count,targetIndex])),pick=k=>Math.floor(rnd()*k);
     for(let attempt=0;attempt<30;attempt++){
-      const walls=[],seen=new Set();while(walls.length<25){const x=pick(7),y=pick(7),a=y*8+x,b=a+(pick(2)?1:8),key=edgeKey(a,b);if(!seen.has(key)){seen.add(key);walls.push([a,b]);}}
+      const walls=[],seen=new Set();while(walls.length<25){const x=pick(7),y=pick(7),a=y*8+x,b=a+(pick(2)?1:8),key=edgeKey(a,b);if(!seen.has(key)){seen.add(key);walls.push(surface==='pillow'?[a,b,b===a+1?1:2]:[a,b]);}}
       const mirrors=[],used=new Set();while(mirrors.length<5){const c=(1+pick(6))*8+1+pick(6);if(!used.has(c)){used.add(c);mirrors.push([c,pick(2)?'/':'\\']);}}
       const available=Array.from({length:64},(_,i)=>i).filter(c=>!used.has(c));for(let i=available.length-1;i>0;i--){const j=pick(i+1);[available[i],available[j]]=[available[j],available[i]];}
       const initial=available.slice(0,count),p={n:8,surface,walls,mirrors,pieces:initial,colors:initial.map((_,i)=>defaultColor(i)),targetIndex,title,date,seed},b=compile(p);
@@ -97,19 +112,38 @@
   function renderPieces(){current.colors.forEach((c,i)=>root.style.setProperty('--rp-robot-'+i,`light-dark(${c.light}, ${c.dark})`));$('#rp-pieces').innerHTML=current.colors.map((c,i)=>`<button type="button" data-piece="${i}" aria-pressed="${i===selected}" ${keyFor(i)?`aria-keyshortcuts="${keyFor(i)}"`:''} class="cursor-interaction"><span class="rp-key">${i+1}</span><span class="rp-dot" style="--piece:${color(i)}"></span>${escape(c.name)}</button>`).join('');
     const count=current.pieces.length;$('#rp-shortcuts').textContent=(count===1?'1 selects the piece':count<10?`1–${count} select colors`:'1–9 select colors · 0 selects 10')+(count>10?' · [ / ] cycle':'')+(mode==='play'?' · arrow keys slide · Ctrl/⌘+Z undo':' · choose a piece to place');
   }
-  function drawBoard(){const targetName=names()[current.targetIndex];let out=`<title>${escape(current.title)} — ${surfaces[current.surface]}</title><desc>8 by 8 square board with ${pieces.length} pieces. Goal: ${escape(targetName)} must stop at row ${Math.floor(current.target/8)+1}, column ${current.target%8+1}.</desc>`;
-    for(let y=0;y<8;y++)for(let x=0;x<8;x++)out+=`<rect x="${36+x*50}" y="${36+y*50}" width="50" height="50" class="rp-grid ${(x+y)%2?'rp-cell-alt':'rp-cell'}"/>`;
-    const twist=current.surface==='mobius'||current.surface==='klein',wrapX=current.surface!=='flat',wrapY=current.surface==='torus'||current.surface==='klein';
-    for(let i=0;i<8;i++){const c=61+i*50;out+=`<text x="${c}" y="23" text-anchor="middle" class="rp-axis">${i+1}</text><text x="${c}" y="454" text-anchor="middle" class="rp-axis">${i+1}</text><text x="21" y="${c+4}" text-anchor="middle" class="rp-axis">${i+1}</text><text x="452" y="${c+4}" text-anchor="middle" class="rp-axis">${twist?8-i:i+1}</text>`;}
-    out+=`<path d="M36 36 L36 436 M436 36 L436 436" class="${wrapX?'rp-seam':'rp-wall'}" fill="none"/><path d="M36 36 L436 36 M36 436 L436 436" class="${wrapY?'rp-seam':'rp-wall'}" fill="none"/>`;
-    const goal=center(point(current.target));out+=`<circle cx="${goal.x}" cy="${goal.y}" r="18" fill="none" stroke="${color(current.targetIndex)}" stroke-width="2" stroke-dasharray="4 3"/><circle cx="${goal.x}" cy="${goal.y}" r="6" fill="${color(current.targetIndex)}" opacity=".65"/>`;
-    for(const [a,b] of current.walls){const pa=point(a),pb=point(b);let x1,y1,x2,y2;
-      if(pa.y===pb.y&&Math.abs(pa.x-pb.x)===1){x1=x2=36+Math.max(pa.x,pb.x)*50;y1=36+pa.y*50;y2=y1+50;}
-      else if(pa.x===pb.x&&Math.abs(pa.y-pb.y)===1){y1=y2=36+Math.max(pa.y,pb.y)*50;x1=36+pa.x*50;x2=x1+50;}
-      if(x1!==undefined)out+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="rp-wall"/>`;
-      else if(Math.abs(pa.x-pb.x)===7&&wrapX){for(const p of [pa,pb]){const x=p.x===0?36:436,y=36+p.y*50;out+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${y+50}" class="rp-wall"/>`;}}
-      else if(Math.abs(pa.y-pb.y)===7&&wrapY){for(const p of [pa,pb]){const x=36+p.x*50,y=p.y===0?36:436;out+=`<line x1="${x}" y1="${y}" x2="${x+50}" y2="${y}" class="rp-wall"/>`;}}
+  function drawEdges(surface){
+    const twist=surface==='mobius'||surface==='klein',adjacent=surface==='cone'||surface==='top',prefix=root.id+'-edge';
+    let defs='',edges='';
+    const seam=(side,palette,pair,reversed=false,fold=false)=>{
+      const vertical=side==='left'||side==='right',coordinate=side==='left'||side==='top'?36:436,id=side,a=reversed?436:36,b=reversed?36:436;
+      defs+=`<linearGradient id="${prefix}-${id}" gradientUnits="userSpaceOnUse" x1="${vertical?0:a}" y1="${vertical?a:0}" x2="${vertical?0:b}" y2="${vertical?b:0}"><stop offset="0" class="rp-seam-${palette}-start"/><stop offset="${fold?'.5':'1'}" class="rp-seam-${palette}-end"/>${fold?`<stop offset="1" class="rp-seam-${palette}-start"/>`:''}</linearGradient>`;
+      const d=vertical?`M${coordinate} 36 V436`:`M36 ${coordinate} H436`;
+      edges+=`<path d="${d}" class="rp-seam" data-seam-side="${side}" data-seam-pair="${pair}" stroke="url(#${prefix}-${id})" fill="none"/>`;
+      for(const t of fold?[136,336]:[136,236,336]){const reverse=reversed||(fold&&t>236),s=reverse?-1:1,arrow=vertical?`M${coordinate-2.3} ${t-2.8*s} L${coordinate} ${t+2.8*s} L${coordinate+2.3} ${t-2.8*s}`:`M${t-2.8*s} ${coordinate-2.3} L${t+2.8*s} ${coordinate} L${t-2.8*s} ${coordinate+2.3}`;
+        edges+=`<path d="${arrow}" class="rp-seam-direction" data-seam-side="${side}" data-seam-direction="${vertical?(reverse?'up':'down'):(reverse?'left':'right')}" fill="none"/>`;
+      }
+    };
+    if(adjacent){seam('top','x','top-left');seam('left','x','top-left');if(surface==='top'){seam('right','y','right-bottom');seam('bottom','y','right-bottom');}else edges+='<path d="M436 36 V436 M36 436 H436" class="rp-wall" fill="none"/>';}
+    else {
+      if(surface!=='flat'){seam('left','x','x');seam('right','x','x',twist);}else edges+='<path d="M36 36 V436 M436 36 V436" class="rp-wall" fill="none"/>';
+      if(surface==='pillow'){seam('top','y','top-fold',false,true);seam('bottom','z','bottom-fold',false,true);}
+      else if(surface==='torus'||surface==='klein'){seam('top','y','y');seam('bottom','y','y');}else edges+='<path d="M36 36 H436 M36 436 H436" class="rp-wall" fill="none"/>';
     }
+    return (defs?'<defs>'+defs+'</defs>':'')+edges;
+  }
+  function drawWalls(p){const segments=new Set();
+    const add=(cell,dir)=>{const {x:cx,y:cy}=point(cell),x=36+cx*50,y=36+cy*50;segments.add([[x,y,x+50,y],[x+50,y,x+50,y+50],[x,y+50,x+50,y+50],[x,y,x,y+50]][dir].join(','));};
+    for(const w of p.walls)for(const dir of w.length===3?[w[2]]:[0,1,2,3]){const next=step(p.n,p.surface,w[0],dir);if(next?.cell===w[1]){add(w[0],dir);add(next.cell,(next.direction+2)%4);}}
+    return Array.from(segments,s=>{const [x1,y1,x2,y2]=s.split(',');return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="rp-wall"/>`;}).join('');
+  }
+  function drawBoard(){const targetName=names()[current.targetIndex];let out=`<title>${escape(current.title)} — ${surfaces[current.surface]}</title><desc>8 by 8 square board with ${pieces.length} pieces. Goal: ${escape(targetName)} must stop at row ${Math.floor(current.target/8)+1}, column ${current.target%8+1}. ${escape(surfaceRules[current.surface])} Match colors and edge numbers on connected gradient bands. Arrowheads show each gradient’s direction.</desc>`;
+    for(let y=0;y<8;y++)for(let x=0;x<8;x++)out+=`<rect x="${36+x*50}" y="${36+y*50}" width="50" height="50" class="rp-grid ${(x+y)%2?'rp-cell-alt':'rp-cell'}"/>`;
+    const twist=current.surface==='mobius'||current.surface==='klein',pillow=current.surface==='pillow';
+    for(let i=0;i<8;i++){const c=61+i*50,label=pillow?`${Math.min(i+1,8-i)}↔${Math.max(i+1,8-i)}`:i+1;out+=`<text x="${c}" y="23" text-anchor="middle" class="rp-axis${pillow?' rp-fold-axis':''}" data-edge-number="top">${label}</text><text x="${c}" y="454" text-anchor="middle" class="rp-axis${pillow?' rp-fold-axis':''}" data-edge-number="bottom">${label}</text><text x="21" y="${c+4}" text-anchor="middle" class="rp-axis" data-edge-number="left">${i+1}</text><text x="452" y="${c+4}" text-anchor="middle" class="rp-axis" data-edge-number="right">${twist?8-i:i+1}</text>`;}
+    out+=drawEdges(current.surface);
+    const goal=center(point(current.target));out+=`<circle cx="${goal.x}" cy="${goal.y}" r="18" fill="none" stroke="${color(current.targetIndex)}" stroke-width="2" stroke-dasharray="4 3"/><circle cx="${goal.x}" cy="${goal.y}" r="6" fill="${color(current.targetIndex)}" opacity=".65"/>`;
+    out+=drawWalls(current);
     for(const [cell,kind] of current.mirrors){const c=center(point(cell));out+=`<line x1="${c.x-14}" y1="${c.y+(kind==='/'?14:-14)}" x2="${c.x+14}" y2="${c.y+(kind==='/'?-14:14)}" class="rp-bumper"/>`;}
     if(lastPath){let d='';for(let i=0;i<lastPath.length;i++){const c=center(point(lastPath[i].cell));d+=`${i===0||lastPath[i].seam?'M':'L'}${c.x},${c.y} `;}out+=`<path d="${d}" fill="none" stroke="var(--rp-trail)" stroke-width="2.5" stroke-dasharray="3 4" opacity=".7"/>`;}
     pieces.forEach((cell,i)=>{const c=center(i===selected&&animationPoint?animationPoint:point(cell));let shape='';
@@ -119,7 +153,7 @@
       if(i%4===3)shape=`<polygon points="${c.x},${c.y-19} ${c.x+19},${c.y} ${c.x},${c.y+19} ${c.x-19},${c.y}" fill="${color(i)}" class="rp-token"/>`;
       out+=`<g data-robot="${i}" class="cursor-interaction" aria-label="${escape(names()[i])}, piece ${i+1}, row ${Math.floor(cell/8)+1}, column ${cell%8+1}"><circle cx="${c.x}" cy="${c.y}" r="24" fill="transparent"/>${i===selected?`<circle cx="${c.x}" cy="${c.y}" r="22" class="rp-selection"/>`:''}${shape}<text x="${c.x}" y="${c.y}" class="rp-token-text">${i+1}</text></g>`;
     });
-    $('#rp-board-svg').innerHTML=out;$('#rp-board-svg').setAttribute('aria-label',`${surfaces[current.surface]} ${mode==='create'?'editor':'puzzle'}. ${targetName} target row ${Math.floor(current.target/8)+1}, column ${current.target%8+1}. Pieces: ${pieces.map((c,i)=>`${names()[i]}, number ${i+1}, row ${Math.floor(c/8)+1} column ${c%8+1}`).join('; ')}.`);
+    $('#rp-board-svg').innerHTML=out;$('#rp-board-svg').setAttribute('aria-label',`${surfaces[current.surface]} ${mode==='create'?'editor':'puzzle'}. ${targetName} target row ${Math.floor(current.target/8)+1}, column ${current.target%8+1}. ${surfaceRules[current.surface]} Matching colors and edge numbers identify connected spaces. Pieces: ${pieces.map((c,i)=>`${names()[i]}, number ${i+1}, row ${Math.floor(c/8)+1} column ${c%8+1}`).join('; ')}.`);
   }
   function updateControls(){const creating=mode==='create';$('#rp-creator').hidden=!creating;$('#rp-editor-actions').hidden=!creating;$('#rp-dpad').hidden=creating;$('#rp-play-actions').hidden=creating;$('#rp-leaderboard').hidden=creating;
     $('#rp-play-mode').setAttribute('aria-pressed',String(!creating));$('#rp-create-mode').setAttribute('aria-pressed',String(creating));$('#rp-play-mode').disabled=busy;$('#rp-create-mode').disabled=busy;
@@ -149,7 +183,7 @@
   function enterCreator(){if(busy)return;cancelCheck();if(!draft){draft=clone(current);draft.title=(current.title+' · remix').slice(0,80);knownRoute=null;}syncCreatorFields();refreshDraft('Edit this board, or enter a seed and generate a new one.');}
   function updateToolHelp(){if(mode!=='create')return;const tool=$('#rp-creator-tool').value;$('#rp-edge-label').hidden=tool!=='wall';$('#rp-edit-help').textContent=({wall:'Click near a grid line to toggle a wall. Matching seam walls appear on both connected edges.',slash:'Click a space to add or remove a / bumper.',backslash:'Click a space to add or remove a \\ bumper.',piece:`Select a numbered color, then click its starting space. Currently placing ${names()[selected]} (${selected+1}).`,goal:`Click the goal space for ${names()[draft.targetIndex]} (${draft.targetIndex+1}).`})[tool];}
   function editCell(cell,tool,edge=1){if(mode!=='create'||!isCell(cell))return;cancelCheck();let message='Board edited. Check solvability before sharing.';
-    if(tool==='wall'){const next=step(8,draft.surface,cell,edge);if(!next){creatorStatus('That outer edge is already a wall on this surface.');return;}const key=edgeKey(cell,next.cell),index=draft.walls.findIndex(w=>edgeKey(...w)===key);if(index<0)draft.walls.push([cell,next.cell]);else draft.walls.splice(index,1);}
+    if(tool==='wall'){const next=step(8,draft.surface,cell,edge);if(!next){creatorStatus('That outer edge is already a wall on this surface.');return;}const wall=(draft.surface==='pillow'||next.seam&&['cone','top'].includes(draft.surface))?portWall(8,draft.surface,cell,edge):[Math.min(cell,next.cell),Math.max(cell,next.cell)],key=wallKey(wall),index=draft.walls.findIndex(w=>wallKey(w)===key||(w.length===2&&edgeKey(w[0],w[1])===edgeKey(cell,next.cell)));if(index<0)draft.walls.push(wall);else draft.walls.splice(index,1);}
     else if(tool==='slash'||tool==='backslash'){if(draft.pieces.includes(cell)||draft.target===cell){creatorStatus('Move the piece or goal away before adding a bumper here.');return;}const kind=tool==='slash'?'/':'\\',index=draft.mirrors.findIndex(m=>m[0]===cell);if(index<0)draft.mirrors.push([cell,kind]);else if(draft.mirrors[index][1]===kind)draft.mirrors.splice(index,1);else draft.mirrors[index][1]=kind;}
     else if(tool==='piece'){if(draft.mirrors.some(m=>m[0]===cell)||draft.pieces.some((c,i)=>i!==selected&&c===cell)){creatorStatus('Choose a space without another piece or a bumper.');return;}draft.pieces[selected]=cell;}
     else if(tool==='goal'){if(draft.mirrors.some(m=>m[0]===cell)){creatorStatus('The goal cannot occupy a bumper.');return;}draft.target=cell;}
@@ -185,7 +219,7 @@
   $('#rp-creator-tool').addEventListener('change',updateToolHelp);
   $('#rp-creator-title').addEventListener('input',e=>{draft.title=e.target.value;refreshDraft();});$('#rp-creator-date').addEventListener('change',e=>{draft.date=e.target.value;refreshDraft();});
   $('#rp-creator-count').addEventListener('change',e=>resizeDraft(Number(e.target.value)));
-  $('#rp-creator-surface').addEventListener('change',e=>{draft.surface=e.target.value;draft.walls=draft.walls.filter(w=>DIRS.some((_,d)=>step(8,draft.surface,w[0],d)?.cell===w[1]));knownRoute=null;refreshDraft('Surface changed. Check solvability again before sharing.');});
+  $('#rp-creator-surface').addEventListener('change',e=>{draft.surface=e.target.value;draft.walls=draft.walls.filter(w=>w.length===3?step(8,draft.surface,w[0],w[2])?.cell===w[1]:DIRS.some((_,d)=>step(8,draft.surface,w[0],d)?.cell===w[1]));knownRoute=null;refreshDraft('Surface changed. Check solvability again before sharing.');});
   $('#rp-creator-target').addEventListener('change',e=>{draft.targetIndex=Number(e.target.value);knownRoute=null;refreshDraft('Target piece changed.');});
   $('#rp-generate').addEventListener('click',()=>{try{const result=generatePuzzle({seed:$('#rp-creator-seed').value,surface:$('#rp-creator-surface').value,count:Number($('#rp-creator-count').value),targetIndex:Number($('#rp-creator-target').value),title:$('#rp-creator-title').value,date:$('#rp-creator-date').value});draft=result.puzzle;knownRoute=result.witness;selected=0;syncCreatorFields();refreshDraft('Generated a solvable board. The same seed, surface, color count and target piece recreate it.');}catch(e){creatorStatus(e.message);}});
   $('#rp-clone').addEventListener('click',()=>{draft=clone(archive.find(p=>p.id===lastPlayId));draft.title=(draft.title+' · remix').slice(0,80);knownRoute=null;selected=0;syncCreatorFields();refreshDraft('Editing a copy of the current puzzle.');});
