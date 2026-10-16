@@ -19,7 +19,7 @@ Outside of mathematics, I enjoy board games, cooking, and spending time with my 
 
 ## Guiding principles
 
-I believe in [Frederica Ardilla’s four axioms](http://fardila.com/). They guide my approach to teaching, advising, and math in general.
+I believe in [Federico Ardila Mantilla’s four axioms](http://fardila.com/). They guide my approach to teaching, advising, and math in general.
 
 **Axiom 1.** Mathematical potential is equally present in different groups, irrespective of geographic, demographic, and economic boundaries.
 
