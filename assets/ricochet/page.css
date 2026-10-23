@@ -1,0 +1,6 @@
+
+.ricochet-page-actions {display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 12px;}
+.ricochet-page-actions a {display:inline-block;padding:13px 20px;border:1px solid #526175;border-radius:9px;font-size:1rem;font-weight:600;line-height:1.4;text-decoration:none;cursor:pointer;}
+.ricochet-page-actions a {background:#26384e;color:#fff;}
+.ricochet-page-actions a:hover {background:#3b526f;color:#fff;}
+.ricochet-page-actions a:focus-visible {outline:3px solid #7952aa;outline-offset:3px;}

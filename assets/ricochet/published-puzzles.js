@@ -12,4 +12,13 @@ window.RICOCHET_PUBLISHED_PUZZLES = {
     {%- assign first_puzzle = false -%}
   {%- endif -%}
 {%- endfor -%}
+{%- for entry in site.data.ricochet_tutorials -%}
+  {%- assign puzzle = entry[1] -%}
+  {%- if puzzle.date and puzzle.date <= release_day -%}
+    {%- unless first_puzzle -%},{%- endunless -%}
+    {%- assign tutorial_key = entry[0] | prepend: "tutorial/" -%}
+    {{- tutorial_key | jsonify -}}:{{- puzzle | jsonify -}}
+    {%- assign first_puzzle = false -%}
+  {%- endif -%}
+{%- endfor -%}
 };

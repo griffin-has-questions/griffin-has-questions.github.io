@@ -1,56 +1,88 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Weekly Ricochet puzzle</title><link rel="stylesheet" href="game.css"><script defer src="published-puzzles.js"></script><script defer src="game.js"></script></head><body>
-<div id="weekly-ricochet-v2" data-mode="game">
-  <div class="rp-top">
-    <div><div class="rp-eyebrow">Weekly puzzle</div><h2>Ricochet on surfaces</h2></div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ricochet on surfaces</title><link rel="stylesheet" href="game.css?v=98020745c40f"><script defer src="scoreboard-config.js?v=6f2eba4bbab7"></script><script defer src="published-puzzles.js"></script><script>window.RICOCHET_CREATOR_FALLBACK={"n": 8, "surface": "flat", "walls": [[36, 44], [45, 53], [36, 37], [53, 54], [48, 49], [49, 57], [37, 38], [8, 9], [51, 52], [32, 33], [54, 62], [44, 52], [21, 29], [34, 35], [42, 50], [18, 26], [54, 55], [27, 35], [9, 17], [48, 56], [38, 46], [35, 36], [10, 11], [42, 43], [44, 45]], "mirrors": [[28, "\\"], [53, "/"], [18, "/"], [9, "\\"], [14, "\\"]], "pieces": [8, 6, 1, 48], "id": "2026-10-05-flat", "date": "2026-10-05", "title": "A turn for the better", "target": 57};</script><script defer src="rules-loader.js?v=51b9c1c827bb"></script><script defer src="game.js?v=40a892750d19"></script></head><body><div id="weekly-ricochet-v2" data-mode="game">
+  <header class="rp-top">
+    <div><div class="rp-eyebrow">A weekly puzzle in fewer moves</div><h2>Ricochet on surfaces</h2></div>
     <div class="rp-archive"><label for="rp-week">Puzzle archive</label><select id="rp-week" aria-label="Choose a weekly puzzle"></select></div>
+  </header>
+  <div class="rp-mode" role="group" aria-label="Puzzle mode">
+    <button type="button" id="rp-play-mode" aria-pressed="true">Play</button>
+    <button type="button" id="rp-create-mode" aria-pressed="false">Create puzzle</button>
   </div>
-  <p class="rp-small rp-creator-intro" hidden id="rp-creator-intro">Create a board, test it, then download one JSON file. Downloading does not publish it; your website updates when you commit that file to its repository.</p><div class="rp-mode" role="group" aria-label="Puzzle mode"><button type="button" id="rp-play-mode" aria-pressed="true" class="cursor-interaction">Play</button><button type="button" id="rp-create-mode" aria-pressed="false" class="cursor-interaction">Create puzzle</button></div>
-  <div id="rp-creator" hidden>
+  <details class="rp-how" id="rp-rules">
+    <summary>How to play &amp; edge connections</summary>
+    <div class="rp-rules"><div class="rp-rule-copy" id="rp-rules-copy"><!-- Edit the paragraphs in this file to change the rules in both Play and Create.
+     The surface-specific connection description is added by the game itself. -->
+<p><strong>Fill every goal at the same time, in as few moves as possible.</strong> A colored goal has the same outline and centered number as its matching piece. A rainbow goal accepts any piece. One piece can fill only one goal.</p>
+<p>Choose a piece with the number keys or its button, then use the arrow keys or direction buttons. It slides until a wall or another piece stops it. Every slide counts as one move.</p>
+<p>Diagonal bumpers turn a moving piece by 90° without stopping it. A move that would stop on a bumper or loop forever is unavailable. Passing through a goal does not fill it.</p>
+<p>Filled goals have a solid glowing outline and sparkles. Their glow disappears if the piece leaves, so all goals must be filled together.</p>
+<p>Match gradient colors, arrow directions, and edge labels to see which spaces are connected. Numbers appear only on connected edges. Short dark bars just inside a connected edge mark a wall that blocks that crossing. Pillow’s top and bottom each fold separately.</p>
+<p>Ctrl+Z (⌘+Z on a Mac) undoes the last move. Restart returns every piece to its starting space.</p>
+<p><strong>Making a puzzle:</strong> Drag objects moves pieces, goals, bumpers, and interior or seam walls. Walls toggles grid edges. Bumpers cycles empty → / → \ → empty. Hold and drag Eraser to remove objects along your stroke, including objects underneath others. Removing a piece also removes its colored goal and updates the remaining piece numbers. Keep at least one piece and one goal. Select an object, then use the row/column controls if you prefer to place it without dragging.</p>
+</div><p id="rp-surface-rule"></p></div>
+  </details>
+  <section id="rp-creator" hidden aria-label="Puzzle creator">
+    <div class="rp-tool-buttons" role="toolbar" aria-label="Board tools">
+      <button type="button" data-tool="drag" aria-pressed="true">Drag objects</button>
+      <button type="button" data-tool="wall" aria-pressed="false">Walls</button>
+      <button type="button" data-tool="bumper" aria-pressed="false">Bumpers</button>
+      <button type="button" data-tool="erase" aria-pressed="false">Eraser</button>
+    </div>
+    <p id="rp-edit-help">Click near a grid line to toggle a wall.</p>
     <div class="rp-fields">
       <label for="rp-creator-title">Puzzle title<input id="rp-creator-title" maxlength="80" value="My weekly puzzle"></label>
-      <label for="rp-creator-date">Puzzle date<input id="rp-creator-date" type="date"></label>
-      <label for="rp-creator-seed" class="rp-wide-field">Generation seed<input id="rp-creator-seed" maxlength="120" value="my-weekly-puzzle" placeholder="e.g. eastford-october-12"></label>
+      <label for="rp-creator-date">Release date<input id="rp-creator-date" type="date"></label>
       <label for="rp-creator-surface">Surface<select id="rp-creator-surface"><option value="flat">Flat</option><option value="cylinder">Cylinder</option><option value="torus">Torus</option><option value="mobius">Möbius strip</option><option value="klein">Klein bottle</option><option value="cone">Cone</option><option value="top">Top</option><option value="pillow">Pillow</option></select></label>
-      <label for="rp-creator-count">Number of colors<input id="rp-creator-count" type="number" min="1" max="32" value="4" step="1"></label>
-      <label for="rp-creator-target">Target piece<select id="rp-creator-target"></select></label>
-      <label for="rp-creator-tool">Edit tool<select id="rp-creator-tool"><option value="wall">Wall</option><option value="slash">/ bumper</option><option value="backslash">\ bumper</option><option value="piece">Starting piece</option><option value="goal">Goal space</option></select></label>
+      <label for="rp-creator-seed">Generation seed<input id="rp-creator-seed" maxlength="120" value="my-weekly-puzzle" placeholder="e.g. autumn-ricochet"></label>
+      <label for="rp-board-width">Width · columns<input id="rp-board-width" type="number" min="4" max="12" value="8" step="1"></label>
+      <label for="rp-board-height">Height · rows<input id="rp-board-height" type="number" min="4" max="12" value="8" step="1"></label>
     </div>
-    <div class="rp-creator-actions"><button type="button" id="rp-generate" class="cursor-interaction">Generate from seed</button><button type="button" id="rp-clone" class="cursor-interaction">Edit current puzzle</button></div>
-    <p id="rp-edit-help">Click near a grid line to toggle a wall.</p>
-  </div>
+    <div class="rp-count-fields">
+      <label for="rp-creator-count">Colors<input id="rp-creator-count" type="number" min="1" max="32" value="4" step="1"></label>
+      <label for="rp-colored-count">Colored goals<input id="rp-colored-count" type="number" min="0" max="4" value="1" step="1"></label>
+      <label for="rp-rainbow-count">Rainbow goals<input id="rp-rainbow-count" type="number" min="0" max="3" value="0" step="1"></label>
+    </div>
+    <div class="rp-goal-list" id="rp-goal-list" aria-label="Required goals"></div>
+    <div class="rp-creator-actions"><button type="button" id="rp-generate">Generate from seed</button><button type="button" id="rp-clone">Edit current puzzle</button></div>
+  </section>
   <div class="rp-meta"><div class="rp-meta-left"><h3 id="rp-title"></h3><span class="rp-surface" id="rp-surface"></span></div><div class="rp-count"><strong id="rp-moves">0</strong> moves</div></div>
+  <div class="rp-goal-progress" id="rp-goal-progress" aria-live="polite"></div>
   <div class="rp-board"><svg id="rp-board-svg" viewBox="0 0 472 472" role="img" aria-label="Puzzle board"></svg></div>
   <div class="rp-controls">
     <div class="rp-pieces" id="rp-pieces" role="group" aria-label="Select a piece"></div>
     <div class="rp-dpad" id="rp-dpad" role="group" aria-label="Move the selected piece">
-      <button class="rp-up cursor-interaction" type="button" data-direction="0" aria-label="Move north">↑</button>
-      <button class="rp-left cursor-interaction" type="button" data-direction="3" aria-label="Move west">←</button>
-      <button class="rp-down cursor-interaction" type="button" data-direction="2" aria-label="Move south">↓</button>
-      <button class="rp-right cursor-interaction" type="button" data-direction="1" aria-label="Move east">→</button>
+      <button class="rp-up" type="button" data-direction="0" aria-label="Move north">↑</button>
+      <button class="rp-left" type="button" data-direction="3" aria-label="Move west">←</button>
+      <button class="rp-down" type="button" data-direction="2" aria-label="Move south">↓</button>
+      <button class="rp-right" type="button" data-direction="1" aria-label="Move east">→</button>
     </div>
   </div>
-  <div class="rp-footer-controls"><span class="rp-small" id="rp-shortcuts">1–4 select colors · arrow keys slide</span><div class="rp-actions" id="rp-play-actions"><button type="button" id="rp-undo" aria-keyshortcuts="Control+Z Meta+Z" class="cursor-interaction">Undo</button><button type="button" id="rp-reset" class="cursor-interaction">Restart</button></div></div>
-  <div id="rp-editor-actions" hidden>
-    <div class="rp-edit-position"><label for="rp-edit-row">Row<input id="rp-edit-row" type="number" min="1" max="8" value="1"></label><label for="rp-edit-col">Column<input id="rp-edit-col" type="number" min="1" max="8" value="1"></label><label for="rp-edit-edge" id="rp-edge-label">Edge<select id="rp-edit-edge"><option value="0">North</option><option value="1" selected>East</option><option value="2">South</option><option value="3">West</option></select></label><button type="button" id="rp-apply-edit" class="cursor-interaction">Apply tool</button></div>
-    <div class="rp-creator-actions"><button type="button" id="rp-check" class="cursor-interaction">Check solvability</button><button type="button" id="rp-download" class="cursor-interaction">Download puzzle JSON</button><button type="button" id="rp-add" class="rp-submit cursor-interaction">Save draft &amp; play</button></div>
-    <p id="rp-creator-status" role="status" aria-live="polite"></p><p class="rp-small">Save draft &amp; play keeps a private draft in this browser. To publish, download the puzzle JSON and add it to your website’s <code>_data/ricochet_puzzles/</code> folder.</p>
-  </div>
-  <div class="rp-status" id="rp-status" role="status" aria-live="polite"></div>
-  <details><summary class="cursor-interaction">Rules &amp; edge connections</summary><div class="rp-rules"><p id="rp-goal-rule"></p><p>Pieces slide until a wall or another piece stops them. Diagonal bumpers turn all pieces by 90° without stopping them. Moves ending on a bumper or looping forever are unavailable.</p><p id="rp-surface-rule"></p><p>Colored gradient edges connect: match their colors and edge numbers. Edges with the same gradient are connected, including adjacent edges on Cone and Top. Pillow’s top and bottom each fold separately: matching colors and paired column labels mark each fold. Arrowheads show the direction of each gradient. Reversed gradients and numbers indicate a twist; Pillow’s arrows point toward the center of each fold. Solid lines are walls, including any drawn across a connected edge. Undo removes the last move from your attempt.</p></div></details>
-  <details id="rp-code-panel"><summary class="cursor-interaction">Save or load a puzzle code</summary><p class="rp-small" style="margin-top:12px">A seed recreates a generated board. The full puzzle code below also preserves manual edits, colors, target, title, and date.</p><label for="rp-code" class="rp-code-label">Full puzzle code · copy to keep, paste to load</label><textarea id="rp-code" rows="3" spellcheck="false" aria-label="Full puzzle code"></textarea><div class="rp-creator-actions"><button type="button" id="rp-get-code" class="cursor-interaction">Get current code</button><button type="button" id="rp-copy-code" class="cursor-interaction">Copy code</button><button type="button" id="rp-load-code" class="cursor-interaction">Load code</button></div><p id="rp-code-status" role="status" aria-live="polite"></p></details>
-  <div class="rp-leaderboard" id="rp-leaderboard">
-    <div class="rp-score-top"><h3>Scoreboard</h3><span class="rp-small">This puzzle only · lowest score first</span></div>
+  <div class="rp-footer-controls"><span class="rp-small" id="rp-shortcuts"></span><div class="rp-actions" id="rp-play-actions"><button type="button" id="rp-undo" aria-keyshortcuts="Control+Z Meta+Z">Undo</button><button type="button" id="rp-reset">Restart</button></div></div>
+  <section id="rp-editor-actions" hidden aria-label="Place and save objects">
+    <div class="rp-edit-position">
+      <label for="rp-edit-row">Row<input id="rp-edit-row" type="number" min="1" max="8" value="1"></label>
+      <label for="rp-edit-col">Column<input id="rp-edit-col" type="number" min="1" max="8" value="1"></label>
+      <label for="rp-edit-edge" id="rp-edge-label">Edge<select id="rp-edit-edge"><option value="0">North</option><option value="1" selected>East</option><option value="2">South</option><option value="3">West</option></select></label>
+      <button type="button" id="rp-apply-edit">Apply tool</button><button type="button" id="rp-delete-object" disabled>Remove selected</button>
+    </div>
+    <div class="rp-creator-actions"><button type="button" id="rp-check">Check solvability</button><button type="button" id="rp-download">Download puzzle JSON</button><button type="button" id="rp-add" class="rp-submit">Save draft &amp; play</button></div>
+    <p id="rp-creator-status" role="status" aria-live="polite"></p>
+    <p class="rp-small">Drafts stay in this browser. Publish a downloaded JSON file by adding it to your website’s <code>_data/ricochet_puzzles/</code> folder and rebuilding on or after its release date.</p>
+  </section>
+  <p class="rp-status" id="rp-status" role="status" aria-live="polite"></p>
+  <details id="rp-code-panel"><summary>Save or load a puzzle code</summary><p class="rp-small" style="margin-top:12px">A seed recreates a generated board. A full code also preserves your edits, every goal, colors, title, and release date.</p><label for="rp-code" class="rp-code-label">Full puzzle code</label><textarea id="rp-code" rows="3" spellcheck="false" aria-label="Full puzzle code"></textarea><div class="rp-creator-actions"><button type="button" id="rp-get-code">Get current code</button><button type="button" id="rp-copy-code">Copy code</button><button type="button" id="rp-load-code">Load code</button></div><p id="rp-code-status" role="status" aria-live="polite"></p></details>
+  <section class="rp-leaderboard" id="rp-leaderboard" aria-labelledby="rp-score-heading">
+    <div class="rp-score-top"><h3 id="rp-score-heading">Shared scoreboard</h3><span class="rp-score-badge" id="rp-score-connection">Connecting…</span></div>
+    <p class="rp-small rp-score-description">This puzzle only · fewest moves first · scores are verified before saving</p>
     <form class="rp-score-form" id="rp-score-form">
-      <label for="rp-initials">Three letters<input id="rp-initials" type="text" maxlength="3" minlength="3" pattern="[A-Za-z]{3}" placeholder="ABC" autocomplete="off" aria-label="Three-letter player name" required></label>
+      <label for="rp-initials">Your three letters<input id="rp-initials" type="text" maxlength="3" minlength="3" pattern="[A-Za-z]{3}" placeholder="ABC" autocomplete="off" aria-label="Three-letter player name" required></label>
       <label for="rp-score">Moves<input id="rp-score" type="text" readonly aria-label="Your completed solution score" placeholder="—"></label>
-      <button type="submit" id="rp-submit" class="rp-submit cursor-interaction" disabled>Save score</button>
+      <button type="submit" id="rp-submit" class="rp-submit" disabled>Submit score</button><button type="button" id="rp-refresh-scores">Refresh</button>
     </form>
-    <p class="rp-small" id="rp-score-help">Finish the puzzle to save your score. Scores are local to this browser.</p>
-    <p class="rp-score-empty" id="rp-empty">No scores saved in this browser yet.</p>
+    <p class="rp-small" id="rp-score-help" role="status" aria-live="polite">Finish the puzzle to submit a score.</p>
+    <p class="rp-score-empty" id="rp-empty">Loading scores…</p>
     <div class="rp-table-wrap" id="rp-table-wrap" hidden><table><thead><tr><th scope="col">Place</th><th scope="col">Player</th><th scope="col">Moves</th><th scope="col">Achieved</th></tr></thead><tbody id="rp-scores"></tbody></table></div>
-  </div>
+    <details id="rp-previous-scores" hidden><summary>Your earlier scores on this device</summary><p class="rp-small">Saved by the earlier game. They have no move record to verify, so they stay separate from the shared scoreboard.</p><div id="rp-previous-rows"></div></details>
+  </section>
 </div>
-
-<noscript>Please enable JavaScript to play or create puzzles.</noscript>
-</body></html>
+<noscript>Enable JavaScript to play or make puzzles.</noscript></body></html>
